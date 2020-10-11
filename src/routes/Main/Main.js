@@ -1,15 +1,20 @@
-import React from 'react';
-import './Main.sass';
-
+import React, { useState } from 'react';
 import { searchPages } from '../../api/api'
+
+import { Result } from '../../components/result'
+
+import './Main.sass';
 
 const Main = () => {
 
+  const [searchText, setSearchText] = useState('')
+  const [results, setResults] = useState([])
+
   const handleSubmit = (evt) => {
-    console.log(evt)
     evt.preventDefault()
-    const searchText = evt.target.value
-    searchPages(searchText)
+    searchPages(searchText).then(res => {
+      setResults(res.query.search)
+    })
   }
 
   return (
@@ -19,12 +24,21 @@ const Main = () => {
           Search here:
         </p>
         <form onSubmit={handleSubmit}>
-          <input />
+          <input
+            type="text"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+          />
           <button type="submit">
             Buscar!
           </button>
         </form>
       </header>
+      <section id="results">
+        {results && results.map(res =>
+          <Result key={res.pageid} value={res} />
+        )}
+      </section>
     </div>
   );
 }

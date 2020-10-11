@@ -12,9 +12,8 @@ const requestOptions = {
   redirect: 'follow'
 };
 
-export const apiGET = (requestUrl) => {
+export const apiGET = (requestUrl) => (
   fetch(requestUrl, requestOptions)
-    .then(response => response.text())
-    .then(result => console.log(result))
-    .catch(error => console.log('error', error));
-}
+    .then(response => response.json())
+    .catch(error => console.log('error', error))
+)
