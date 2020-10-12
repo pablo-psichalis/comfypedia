@@ -1,7 +1,7 @@
 import { getFullUrl, apiGET } from '../utils/api-utils'
 import lang from './lang-codes'
 
-export const searchPages = (query) => {
+export const searchPages = (query, lang = lang.ENGLISH) => {
   const params = {
     action: 'query',
     list: 'search',
@@ -9,9 +9,36 @@ export const searchPages = (query) => {
     origin: '*',
     srsearch: query
   }
-  const requestUrl = getFullUrl(params)
-  return apiGET(requestUrl)
+  const requestUrl = getFullUrl(params, lang)
+  return (
+    apiGET(requestUrl)
+      .then(data => data.query.search)
+  )
 }
+
+export const getAlternatedMergedSearches = (queryText) => new Promise((resolve, reject) => {
+  const searchLanguages = [lang.ENGLISH, lang.CHINESE, lang.SPANISH]
+  Promise.all(searchLanguages.map((langCode) => searchPages(queryText, langCode)))
+    .then((allQueryResults) => {
+      const mergedResults = allQueryResults
+        .reduce((r, a) => (a.forEach((a, i) => (r[i] = r[i] || []).push(a)), r), [])
+        .reduce((a, b) => a.concat(b));
+      resolve(mergedResults)
+    })
+    .catch(err => reject(err))
+})
+
+export const getMergedSearches = (queryText) => new Promise((resolve, reject) => {
+  const apiQueries = [getChineseToAll, getEnglishToAll, getSpanishToAll]
+  Promise.all(apiQueries.map((apiQuery) => apiQuery(queryText)))
+    .then((allQueryResults) => {
+      const mergedResults = allQueryResults.concat
+        .apply([], allQueryResults)
+        .filter(result => result.missing !== "")  // prevent false results
+      resolve(mergedResults)
+    })
+    .catch(err => reject(err))
+})
 
 export const getAllPossibleResults = (queryText) => new Promise((resolve, reject) => {
   const apiQueries = [getChineseToAll, getEnglishToAll, getSpanishToAll]
@@ -32,7 +59,6 @@ export const getSpanishToAll = (query) => getMultipleResults([getSpanishToChines
 
 export const getMultipleResults = (promiseList, query) => {
   return Promise.all(promiseList.map(p => p(query))).then(responses => {
-    console.log('RESPUETAS: ', responses)
     let results = []
     responses.forEach(r => r && r.query && results.push(...Object.values(r.query.pages)))
     return results

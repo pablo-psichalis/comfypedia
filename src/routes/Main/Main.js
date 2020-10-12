@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { searchPages } from '../../api/api'
+import { getAlternatedMergedSearches } from '../../api/api'
 
 import { Result } from '../../components/result'
 
@@ -12,8 +12,8 @@ const Main = () => {
 
   const handleSubmit = (evt) => {
     evt.preventDefault()
-    searchPages(searchText).then(res => {
-      setResults(res.query.search)
+    getAlternatedMergedSearches(searchText).then(res => {
+      setResults(res)
     })
   }
 
