@@ -1,7 +1,7 @@
 import { getFullUrl, apiGET } from '../utils/api-utils'
 import lang from './lang-codes'
 
-export const searchPages = (query, lang = lang.ENGLISH) => {
+export const searchPages = (query, langCode = lang.ENGLISH) => {
   const params = {
     action: 'query',
     list: 'search',
@@ -9,7 +9,7 @@ export const searchPages = (query, lang = lang.ENGLISH) => {
     origin: '*',
     srsearch: query
   }
-  const requestUrl = getFullUrl(params, lang)
+  const requestUrl = getFullUrl(params, langCode)
   return (
     apiGET(requestUrl)
       .then(data => data.query.search)
@@ -34,7 +34,6 @@ export const getMergedSearches = (queryText) => new Promise((resolve, reject) =>
     .then((allQueryResults) => {
       const mergedResults = allQueryResults.concat
         .apply([], allQueryResults)
-        .filter(result => result.missing !== "")  // prevent false results
       resolve(mergedResults)
     })
     .catch(err => reject(err))
@@ -46,7 +45,6 @@ export const getAllPossibleResults = (queryText) => new Promise((resolve, reject
     .then((allQueryResults) => {
       const mergedResults = allQueryResults.concat
         .apply([], allQueryResults)
-        .filter(result => result.missing !== "")  // prevent false results
       resolve(mergedResults)
     })
     .catch(err => reject(err))
@@ -60,7 +58,7 @@ export const getSpanishToAll = (query) => getMultipleResults([getSpanishToChines
 export const getMultipleResults = (promiseList, query) => {
   return Promise.all(promiseList.map(p => p(query))).then(responses => {
     let results = []
-    responses.forEach(r => r && r.query && results.push(...Object.values(r.query.pages)))
+    responses.forEach(r => results = [...results, ...r])
     return results
   })
 }
@@ -89,6 +87,11 @@ const getSpecificLangLink = (queryText, inputLang, outputLang) => {
 
   const requestUrl = getFullUrl(params, inputLang)
   return apiGET(requestUrl)
+    .then(res =>
+      Object.values(res.query.pages)
+        .filter(p => p && p.langlinks)
+        .flatMap(p => p.langlinks)
+    )
 }
 
 export default searchPages

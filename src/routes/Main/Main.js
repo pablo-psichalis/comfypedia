@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { getAlternatedMergedSearches } from '../../api/api'
 
-import { Result } from '../../components/result'
+import { Result } from '../../components/Result'
 
 import './Main.sass';
 
@@ -20,9 +20,6 @@ const Main = () => {
   return (
     <div id="main">
       <header className="main-header">
-        <p>
-          Search here:
-        </p>
         <form onSubmit={handleSubmit}>
           <input
             type="text"
