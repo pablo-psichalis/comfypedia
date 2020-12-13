@@ -8,13 +8,15 @@ import './Main.sass';
 const Main = () => {
 
   const [searchText, setSearchText] = useState('')
-  const [results, setResults] = useState([])
+  const [results, setResults] = useState(null)
 
   const handleSubmit = (evt) => {
     evt.preventDefault()
-    getAlternatedMergedSearches(searchText).then(res => {
-      setResults(res)
-    })
+    if (searchText) {
+      getAlternatedMergedSearches(searchText).then(res => {
+        setResults(res)
+      })
+    }
   }
 
   return (
@@ -35,6 +37,11 @@ const Main = () => {
         {results && results.map(res =>
           <Result key={res.pageid} value={res} />
         )}
+        {(results && !results.length) &&
+          <div className="no-results">
+            <span>No results for <b>{searchText}</b></span>
+          </div>
+        }
       </section>
     </div>
   );

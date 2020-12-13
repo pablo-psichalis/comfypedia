@@ -20,9 +20,13 @@ export const getAlternatedMergedSearches = (queryText) => new Promise((resolve, 
   const searchLanguages = [lang.ENGLISH, lang.CHINESE, lang.SPANISH]
   Promise.all(searchLanguages.map((langCode) => searchPages(queryText, langCode)))
     .then((allQueryResults) => {
-      const mergedResults = allQueryResults
-        .reduce((r, a) => (a.forEach((a, i) => (r[i] = r[i] || []).push(a)), r), [])
-        .reduce((a, b) => a.concat(b));
+      const nonEmptyResults = allQueryResults.filter(array => !!array.length)
+      const mergedResults = nonEmptyResults.length
+        ? nonEmptyResults
+          .filter(array => array.length)
+          .reduce((r, array) => (array.forEach((a, i) => (r[i] = r[i] || []).push(a)), r), [])
+          .reduce((a, b) => a.concat(b))
+        : []
       resolve(mergedResults)
     })
     .catch(err => reject(err))
