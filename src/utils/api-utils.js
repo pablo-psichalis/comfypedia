@@ -17,3 +17,5 @@ export const apiGET = (requestUrl) => (
     .then(response => response.json())
     .catch(error => console.log('error', error))
 )
+
+export const htmlSnippetToString = (htmlSnippet) => htmlSnippet.replace(/<[^>]+>/g, '');

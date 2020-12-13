@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
-import './Result.sass'
 import { getAllPossibleResults } from '../api/api'
+import { htmlSnippetToString } from '../utils/api-utils'
+
+import './Result.sass'
 
 export const Result = ({ value }) => {
   const { title, snippet } = value
@@ -17,7 +19,7 @@ export const Result = ({ value }) => {
       <h1>
         {title}
       </h1>
-      <div dangerouslySetInnerHTML={{ __html: snippet }} />
+      <span>{`${htmlSnippetToString(snippet)} ...`}</span>
       {langlinks && langlinks.map(langlink => (
         <p>{langlink['*']}</p>
       ))}
