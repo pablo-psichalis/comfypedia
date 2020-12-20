@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@capacitor/android": "^2.4.5",
+    "@capacitor/core": "^2.4.5",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -37,6 +39,7 @@
     ]
   },
   "devDependencies": {
+    "@capacitor/cli": "2.4.5",
     "eslint-plugin-react": "^7.21.2"
   }
 }

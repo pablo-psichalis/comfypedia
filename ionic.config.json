@@ -1,0 +1,7 @@
+{
+  "name": "comfypedia",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
