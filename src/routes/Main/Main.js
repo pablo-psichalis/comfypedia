@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { getAlternatedMergedSearches } from '../../api/api'
 
 import { Result } from '../../components/Result'
@@ -10,10 +10,13 @@ const Main = () => {
   const [searchText, setSearchText] = useState('')
   const [results, setResults] = useState(null)
 
+  const searchBar = useRef()
+
   const handleSubmit = (evt) => {
     evt.preventDefault()
     if (searchText) {
       doSearch(searchText)
+      searchBar.current.blur()
     }
   }
 
@@ -23,6 +26,8 @@ const Main = () => {
       timeout = setTimeout(() => {
         doSearch(searchText)
       }, 300)
+    } else {
+      setResults(null)
     }
     return () => timeout && clearTimeout(timeout)
   }, [searchText])
@@ -35,16 +40,15 @@ const Main = () => {
 
   return (
     <div id="main">
-      <header className="main-header">
+      <header className="main-header" >
         <form onSubmit={handleSubmit}>
-          <div className="search-wrapper">
-            <input
-              className="search-input"
-              type="text"
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-            />
-          </div>
+          <input
+            ref={searchBar}
+            className="search-input"
+            type="search"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value) }
+          />
         </form>
       </header>
       <section id="results">
