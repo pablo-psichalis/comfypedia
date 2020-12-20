@@ -25,9 +25,10 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 ## Mobile version
 [Capacitor](https://capacitorjs.com/) was installed to generate the mobile version. 
 ### Android
-To generate the android apk you may use the following commands (requires Android studio and the Android SDK).
-- `npx cap copy`
-- `npx cap open android` 
+To generate the android apk you may execute the following commands (requires Android studio and the Android SDK).
+1. `yarn build`
+2. `npx cap copy`
+3. `npx cap open android` 
 
 ### iOS
 Coming soon...
