@@ -12,9 +12,13 @@ export const searchPages = (query, langCode = lang.ENGLISH) => {
   const requestUrl = getFullUrl(params, langCode)
   return (
     apiGET(requestUrl)
-      .then(data => data.query.search)
+      .then(data => {
+        const pages = data.query.search
+        pages.forEach(r => r.lang = langCode)
+        return pages
+      })
   )
-}
+} 
 
 export const getAlternatedMergedSearches = (queryText) => new Promise((resolve, reject) => {
   const searchLanguages = [lang.ENGLISH, lang.CHINESE, lang.SPANISH]
