@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { Plugins } from '@capacitor/core';
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
+
 import Main from './Main/Main'
 
 const useSplashHide = () => {

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">comfypedia</string>
+    <string name="title_activity_main">comfypedia</string>
+    <string name="package_name">io.ionic.comfypedia</string>
+    <string name="custom_url_scheme">io.ionic.comfypedia</string>
+</resources>
