@@ -1,17 +1,15 @@
 import React, { useState } from 'react'
-import { getAllPossibleResults } from '../api/api'
+import { getAllPossibleResults, getWikipediaUrlFromPageId } from '../api/api'
 import { htmlSnippetToString } from '../utils/api-utils'
 
 import './Result.sass'
 
 export const Result = ({ value }) => {
-  const { title, snippet } = value
-
-  const [langlinks, setLanglinks] = useState([])
+  const { title, snippet, lang } = value
 
   const handleClick = () => {
-    getAllPossibleResults(title)
-      .then(res => setLanglinks(res))
+    getWikipediaUrlFromPageId(value.pageid, lang)
+      .then(url => window.open(url, '_system'))
   }
 
   return (
@@ -20,9 +18,6 @@ export const Result = ({ value }) => {
         {title}
       </h1>
       <span>{`${htmlSnippetToString(snippet)} ...`}</span>
-      {langlinks && langlinks.map(langlink => (
-        <p>{langlink['*']}</p>
-      ))}
     </div>
   )
 }
