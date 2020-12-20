@@ -102,4 +102,27 @@ const getSpecificLangLink = (queryText, inputLang, outputLang) => {
     )
 }
 
+export const getWikipediaUrlFromPageId = (pageId, lang) => {
+  const params = {
+    action: 'query',
+    prop: 'info',
+    format: 'json',
+    origin: '*',
+    inprop: 'url',
+    pageids: pageId
+  }
+  
+  const requestUrl = getFullUrl(params, lang)
+  return apiGET(requestUrl)
+    .then(res => {
+      const pages = res.query && res.query.pages
+      if (pages) {
+        const myPage = Object.values(pages).pop()
+        return myPage.fullurl
+      } else {
+        return null
+      }
+    })
+}
+
 export default searchPages
