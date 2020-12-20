@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { getAlternatedMergedSearches } from '../../api/api'
+import { getAlternatedMergedSearches } from '../../api/api-search'
 
 import { Result } from '../../components/Result'
 

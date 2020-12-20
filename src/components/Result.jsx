@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { getAllPossibleResults, getWikipediaUrlFromPageId } from '../api/api'
+import React from 'react'
+import { getWikipediaUrlFromPageId } from '../api/api-search'
 import { htmlSnippetToString } from '../utils/api-utils'
 
 import './Result.sass'
